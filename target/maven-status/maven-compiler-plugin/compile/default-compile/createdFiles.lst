@@ -1,0 +1,5 @@
+com\gdczwlkj\config\RedisCache.class
+com\gdczwlkj\persistent\entity\UserDemo.class
+com\gdczwlkj\persistent\mapper\UserMapper.class
+com\gdczwlkj\controller\DemoController.class
+com\gdczwlkj\AppStarter.class
