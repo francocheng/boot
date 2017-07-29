@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration debug="true">
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <jmxConfigurator/>
+
+    <property name="log_home" value="/app/logs"/>
+    <property name="log_name" value="franco-admin"/>
+    <property name="access_log_name" value="access-log-admin"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout>
+            <pattern>TRACE_ID=%X{traceId},LOG_DATE=%d{yyyy-MM-dd HH:mm:ss.SSS},THREAD=[%thread],LEVEL=%-5level,LOGGER=%logger{36},%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/app/logs/${log_name}/${log_name}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/app/logs/${log_name}/${log_name}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <layout>
+            <pattern>TRACE_ID=%X{traceId},LOG_DATE=%d{yyyy-MM-dd HH:mm:ss.SSS},THREAD=[%thread],LEVEL=%-5level,LOGGER=%logger{36},%msg%n</pattern>
+        </layout>
+    </appender>
+
+   <appender name="ACCESS_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/app/logs/${log_name}/${access_log_name}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/app/logs/${log_name}/${access_log_name}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+       <layout>
+           <pattern>TRACE_ID=%X{traceId},THREAD=%thread,%msg%n</pattern>
+       </layout>
+    </appender>
+
+    <springProfile name="local">
+        <!-- ODC Loggers -->
+        <logger name="com.gdczwlkj" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <!-- Spring Boot Loggers -->
+        <logger name="org.springframework.boot" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <logger name="org.springframework.boot.actuate" level="WARN" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <!-- Redis Loggers -->
+        <logger name="redis.clients" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <logger name="org.springframework.data.redis" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <!-- JDBC Loggers -->
+        <logger name="org.mybatis" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <logger name="org.mybatis.spring" level="WARN" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <logger name="org.apache.ibatis" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <logger name="java.sql" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <logger name="com.alibaba.druid" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+        <logger name="MDCFilter" level="INFO" additivity="false">
+            <appender-ref ref="ACCESS_LOG_FILE"/>
+        </logger>
+        <logger name="org.springframework.boot.context.web.OrderedRequestContextFilter" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <!-- ROOT -->
+        <root level="ERROR">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+
+</configuration>
+
+
+

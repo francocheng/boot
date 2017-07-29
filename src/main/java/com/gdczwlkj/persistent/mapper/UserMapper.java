@@ -10,11 +10,11 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface UserMapper {
 
-    @Select("SELECT * FROM test_user WHERE id = #{id}")
+    /*@Select("SELECT * FROM test_user WHERE id = #{id}")
     @Results({
         @Result(property = "id", column = "id"),
         @Result(property = "name", column = "name")
-    })
+    })*/
     UserDemo getOne(Integer id);
 
 
